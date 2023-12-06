@@ -1,0 +1,33 @@
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://Gur:Singh@localhost:8766/eureka
+
+
+  # Distribution Tracing
+
+spring:
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+
+  # Kafka Configuration
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: NotificationTopic
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.type.mapping: event:co.learning.project.OrderPlaceEvent
+      group-id: NotificationID
+  application:
+    name: notification-service
+
+server:
+  port: 8083

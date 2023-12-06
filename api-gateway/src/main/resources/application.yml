@@ -1,0 +1,67 @@
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://Gur:Singh@localhost:8766/eureka
+
+# Logging properties
+logging:
+  level:
+    root: info
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: info
+    org.springframework.cloud.gateway: trace
+
+#Load Balancer
+
+spring:
+  cloud:
+    gateway:
+      routes:
+# Product-Service
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/product
+# Order-Service
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+              Path=/api/order
+# Discovery-Service
+        - id: discovery-server
+          uri: http://localhost:8766
+          predicates:
+            - Path=/eureka/web
+          filters:
+            - SetPath=/
+        - id: discovery-server-static
+          uri: http://localhost:8766
+          predicates:
+          - Path= /eureka/**
+
+
+
+  application:
+    name: Api-Gateway
+
+#Spring Security
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8181/realms/spring-boot-microservice-realm
+
+  # Distribution Tracing
+
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+
+
+server:
+  port: 8090
+
+
+

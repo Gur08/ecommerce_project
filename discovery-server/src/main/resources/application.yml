@@ -1,0 +1,30 @@
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+
+  instance:
+    hostname: localhost
+server:
+  port: 8766
+
+security:
+  basic:
+    enabled: true
+#  user:
+#    name: Gur # login username
+#    password: password
+
+  # Distribution Tracing
+
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+
+
+eureka.username: ${EUREKA_USERNAME:Gur}
+eureka.password: ${EUREKA_USERNAME:Singh}
